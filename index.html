@@ -1,1047 +1,635 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portfolio — Multimedia & Digital Strategy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --bg: #0a0a0f;
-      --surface: #111118;
-      --surface2: #1a1a24;
-      --accent: #c8f135;
-      --accent2: #6e56ff;
-      --accent3: #ff6b35;
-      --text: #f0eeea;
-      --muted: #6b6b7a;
-      --border: rgba(255,255,255,0.07);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-    }
-
-    /* ── NOISE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.5;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.4rem 3rem;
-      backdrop-filter: blur(20px);
-      background: rgba(10,10,15,0.7);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .nav-logo span { color: var(--accent); }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 0.82rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--text); }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 0 3rem;
-      padding-top: 5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.18;
-      animation: drift 12s ease-in-out infinite alternate;
-    }
-
-    .blob-1 { width: 600px; height: 600px; background: var(--accent2); top: -150px; right: -100px; }
-    .blob-2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; right: 30%; animation-delay: -4s; }
-    .blob-3 { width: 350px; height: 350px; background: var(--accent3); top: 30%; left: -80px; animation-delay: -8s; }
-
-    @keyframes drift {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(30px, 20px) scale(1.08); }
-    }
-
-    .hero-content { position: relative; z-index: 1; }
-
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid rgba(200,241,53,0.25);
-      padding: 0.35rem 0.9rem;
-      border-radius: 100px;
-      margin-bottom: 2rem;
-      animation: fadeUp 0.8s ease both;
-    }
-
-    .hero-tag::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-    }
-
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(3rem, 6vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1.02;
-      letter-spacing: -0.03em;
-      animation: fadeUp 0.8s 0.1s ease both;
-    }
-
-    h1 em {
-      font-style: normal;
-      color: transparent;
-      -webkit-text-stroke: 1px var(--text);
-    }
-
-    .hero-sub {
-      margin-top: 1.5rem;
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 420px;
-      line-height: 1.7;
-      animation: fadeUp 0.8s 0.2s ease both;
-    }
-
-    .hero-cta {
-      margin-top: 2.5rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      animation: fadeUp 0.8s 0.3s ease both;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.85rem 2rem;
-      border-radius: 6px;
-      font-size: 0.88rem;
-      font-weight: 400;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #0a0a0f;
-      font-weight: 600;
-    }
-
-    .btn-primary:hover { background: #d4f84a; transform: translateY(-2px); }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-ghost:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
-
-    .hero-visual {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: flex-end;
-      animation: fadeUp 0.8s 0.2s ease both;
-    }
-
-    .hero-card-stack {
-      position: relative;
-      width: 360px;
-      height: 440px;
-    }
-
-    .hc {
-      position: absolute;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .hc-1 {
-      width: 300px; height: 360px;
-      background: var(--surface);
-      bottom: 0; left: 50%; transform: translateX(-50%) rotate(-6deg);
-      background: linear-gradient(135deg, #1a1a28, #111118);
-    }
-
-    .hc-2 {
-      width: 300px; height: 360px;
-      background: var(--surface2);
-      bottom: 0; left: 50%; transform: translateX(-50%) rotate(-1deg);
-    }
-
-    .hc-main {
-      width: 300px; height: 360px;
-      background: var(--surface);
-      bottom: 0; left: 50%; transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      padding: 1.8rem;
-      gap: 1.2rem;
-    }
-
-    .hc-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .hc-metric {
-      font-family: 'Syne', sans-serif;
-      font-size: 3rem;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.03em;
-      line-height: 1;
-    }
-
-    .hc-bar-wrap { margin-top: auto; }
-
-    .hc-bar-row {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .hc-bar-lbl { font-size: 0.72rem; color: var(--muted); width: 60px; }
-
-    .hc-bar-track {
-      flex: 1;
-      height: 5px;
-      background: var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .hc-bar-fill {
-      height: 100%;
-      border-radius: 10px;
-      background: var(--accent);
-      animation: growBar 1.5s 0.5s ease both;
-    }
-
-    @keyframes growBar {
-      from { width: 0 !important; }
-    }
-
-    /* ── SECTION SHARED ── */
-    section { padding: 6rem 3rem; }
-
-    .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
-
-    h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-
-    /* ── SKILLS STRIP ── */
-    .skills-strip {
-      padding: 2rem 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .skills-track {
-      display: flex;
-      gap: 3rem;
-      animation: marquee 25s linear infinite;
-      white-space: nowrap;
-    }
-
-    .skills-track span {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-shrink: 0;
-    }
-
-    .skills-track span::after {
-      content: '✦';
-      color: var(--accent);
-      font-size: 0.6rem;
-    }
-
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    /* ── WORKS GRID ── */
-    #works { background: var(--bg); }
-
-    .works-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 3.5rem;
-    }
-
-    .categories {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .cat-btn {
-      padding: 0.4rem 1rem;
-      border-radius: 100px;
-      font-size: 0.78rem;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .cat-btn.active, .cat-btn:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #0a0a0f;
-    }
-
-    .works-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 1.2rem;
-    }
-
-    .work-card {
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      overflow: hidden;
-      transition: transform 0.3s, border-color 0.3s;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .work-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(255,255,255,0.15);
-    }
-
-    .work-card:nth-child(1) { grid-column: span 7; }
-    .work-card:nth-child(2) { grid-column: span 5; }
-    .work-card:nth-child(3) { grid-column: span 4; }
-    .work-card:nth-child(4) { grid-column: span 4; }
-    .work-card:nth-child(5) { grid-column: span 4; }
-    .work-card:nth-child(6) { grid-column: span 6; }
-    .work-card:nth-child(7) { grid-column: span 6; }
-
-    .card-thumb {
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .work-card:nth-child(1) .card-thumb { height: 260px; }
-    .work-card:nth-child(6) .card-thumb,
-    .work-card:nth-child(7) .card-thumb { height: 180px; }
-
-    .card-thumb-bg {
-      position: absolute;
-      inset: 0;
-      opacity: 0.15;
-      transition: opacity 0.3s;
-    }
-
-    .work-card:hover .card-thumb-bg { opacity: 0.25; }
-
-    .card-thumb-icon {
-      position: relative;
-      z-index: 1;
-      font-size: 2.8rem;
-      filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
-    }
-
-    .card-body {
-      padding: 1.4rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-cat {
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-      display: inline-block;
-      margin-bottom: 0.8rem;
-      font-weight: 400;
-    }
-
-    .cat-mm { background: rgba(110,86,255,0.15); color: #a89eff; }
-    .cat-dm { background: rgba(255,107,53,0.15); color: #ff9470; }
-    .cat-bi { background: rgba(200,241,53,0.15); color: var(--accent); }
-
-    .card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.01em;
-    }
-
-    .card-desc {
-      font-size: 0.83rem;
-      color: var(--muted);
-      line-height: 1.6;
-      flex: 1;
-    }
-
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1.2rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .card-tools {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-    }
-
-    .tool-tag {
-      font-size: 0.65rem;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      background: var(--surface2);
-      color: var(--muted);
-      letter-spacing: 0.05em;
-    }
-
-    .card-arrow {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      color: var(--muted);
-      transition: all 0.2s;
-      flex-shrink: 0;
-    }
-
-    .work-card:hover .card-arrow {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #0a0a0f;
-    }
-
-    /* ── ABOUT ── */
-    #about {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-
-    .about-content p {
-      color: var(--muted);
-      line-height: 1.8;
-      font-size: 0.98rem;
-      margin-top: 1.5rem;
-    }
-
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .stat-box {
-      padding: 1.5rem;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--surface2);
-    }
-
-    .stat-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.03em;
-      line-height: 1;
-    }
-
-    .stat-lbl {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 0.4rem;
-    }
-
-    .about-visual {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .skill-row {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .skill-info {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.82rem;
-    }
-
-    .skill-pct { color: var(--muted); }
-
-    .skill-bar {
-      height: 6px;
-      background: var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .skill-fill {
-      height: 100%;
-      border-radius: 10px;
-      animation: growBar 1.2s ease both;
-    }
-
-    /* ── CONTACT ── */
-    #contact { text-align: center; }
-
-    #contact h2 { margin-bottom: 1rem; }
-
-    #contact p {
-      color: var(--muted);
-      margin-bottom: 2.5rem;
-      font-size: 1rem;
-    }
-
-    .contact-links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.85rem 1.8rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.88rem;
-      transition: all 0.2s;
-    }
-
-    .contact-link:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-3px);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      padding: 2rem 3rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav { padding: 1.2rem 1.5rem; }
-      .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 4rem; }
-      .hero-visual { display: none; }
-      section { padding: 4rem 1.5rem; }
-      .works-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
-      .works-grid { grid-template-columns: 1fr; }
-      .work-card:nth-child(n) { grid-column: span 1; }
-      .about-grid { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tiago Lagos — Portfólio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --ink: #1A1A18;
+    --ink-2: #5A5A54;
+    --ink-3: #9A9A90;
+    --accent: #2B4EFF;
+    --accent-light: #E8ECFF;
+    --green: #1A6B3C;
+    --green-light: #E4F2EB;
+    --amber: #8B5E00;
+    --amber-light: #FDF3DC;
+    --border: rgba(26,26,24,0.1);
+    --radius: 12px;
+    --radius-lg: 20px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 3rem;
+    background: rgba(247,245,240,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 13px; color: var(--ink-2); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 7rem 3rem 4rem;
+    max-width: 1100px; margin: 0 auto;
+    gap: 4rem;
+  }
+  .hero-left { flex: 1; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--ink-3); }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(48px, 6vw, 76px);
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-desc { font-size: 17px; color: var(--ink-2); line-height: 1.7; max-width: 480px; margin-bottom: 2.5rem; font-weight: 300; }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 13px 28px; background: var(--ink); color: #fff;
+    border: none; border-radius: 50px; font-size: 14px; font-weight: 500;
+    cursor: pointer; text-decoration: none; transition: transform 0.2s, background 0.2s;
+  }
+  .btn-primary:hover { background: #333; transform: translateY(-1px); }
+  .btn-ghost {
+    padding: 13px 28px; background: transparent; color: var(--ink);
+    border: 1px solid var(--border); border-radius: 50px; font-size: 14px; font-weight: 500;
+    cursor: pointer; text-decoration: none; transition: border-color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--ink); transform: translateY(-1px); }
+  .hero-right { flex: 0 0 260px; display: flex; flex-direction: column; gap: 12px; }
+  .hero-card {
+    background: var(--surface); border-radius: var(--radius); padding: 1.1rem 1.25rem;
+    border: 1px solid var(--border);
+    animation: fadeUp 0.6s both;
+  }
+  .hero-card:nth-child(2) { animation-delay: 0.1s; }
+  .hero-card:nth-child(3) { animation-delay: 0.2s; }
+  .hc-label { font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .hc-val { font-size: 22px; font-weight: 500; color: var(--ink); }
+  .hc-sub { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+
+  /* SECTIONS */
+  section { padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .section-header { margin-bottom: 3rem; }
+  .section-eyebrow {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: 0.5rem;
+  }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--ink); }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0 3rem; }
+
+  /* EXPERIENCE */
+  .exp-grid { display: flex; flex-direction: column; gap: 0; }
+  .exp-row {
+    display: grid; grid-template-columns: 140px 1fr;
+    gap: 2rem; padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+    animation: fadeUp 0.5s both;
+  }
+  .exp-row:first-child { border-top: 1px solid var(--border); }
+  .exp-date { font-size: 13px; color: var(--ink-3); padding-top: 3px; }
+  .exp-company { font-size: 17px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+  .exp-role { font-size: 14px; color: var(--ink-2); margin-bottom: 10px; }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .exp-tag {
+    font-size: 11px; padding: 4px 10px; border-radius: 20px;
+    background: var(--bg); border: 1px solid var(--border); color: var(--ink-2);
+  }
+
+  /* SKILLS */
+  .skills-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .skill-block { background: var(--surface); border-radius: var(--radius); padding: 1.25rem; border: 1px solid var(--border); }
+  .skill-icon { font-size: 20px; margin-bottom: 10px; }
+  .skill-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .skill-desc { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+
+  /* PROJECTS */
+  .proj-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+  .proj-tab {
+    padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 500;
+    cursor: pointer; border: 1px solid var(--border); background: transparent;
+    color: var(--ink-2); transition: all 0.2s;
+  }
+  .proj-tab.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .proj-tab:hover:not(.active) { border-color: var(--ink); color: var(--ink); }
+
+  .proj-section { display: none; }
+  .proj-section.visible { display: block; }
+
+  /* MM PROJECT */
+  .mm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 1.5rem; }
+  .mm-media { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); background: #000; }
+  .mm-media-label { font-size: 11px; color: var(--ink-3); padding: 8px 14px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .mm-poster { position: relative; cursor: pointer; }
+  .mm-poster img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+  .mm-poster-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+  .mm-poster:hover .mm-poster-overlay { opacity: 1; }
+  .play-circle { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; }
+  .play-tri { width: 0; height: 0; border: 8px solid transparent; border-left: 16px solid #111; margin-left: 4px; }
+  .video-container { position: relative; width: 100%; aspect-ratio: 9/16; background: #000; }
+  .video-container iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+  /* MARKETING PROJECT */
+  .mkt-hero { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 2rem; margin-bottom: 16px; }
+  .mkt-hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .mkt-title { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--ink); margin-bottom: 4px; }
+  .mkt-sub { font-size: 14px; color: var(--ink-2); }
+  .swot { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 400px; }
+  .swot-cell { border-radius: 8px; padding: 0.6rem 0.85rem; }
+  .s { background: var(--green-light); } .s .sl { color: var(--green); }
+  .w { background: #FDEAEA; } .w .sl { color: #991F1F; }
+  .o { background: var(--accent-light); } .o .sl { color: var(--accent); }
+  .t { background: var(--amber-light); } .t .sl { color: var(--amber); }
+  .sl { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .sv { font-size: 12px; color: var(--ink-2); line-height: 1.4; }
+  .mkt-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .mkt-metric { background: var(--bg); border-radius: 8px; padding: 0.75rem 1rem; text-align: center; }
+  .mm-num { font-size: 22px; font-weight: 500; color: var(--ink); }
+  .mm-lbl { font-size: 11px; color: var(--ink-3); }
+  .mkt-email { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 1.5rem 2rem; }
+  .mkt-email-title { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 0.5rem; }
+  .mkt-email-desc { font-size: 13px; color: var(--ink-2); line-height: 1.6; }
+
+  /* BI PROJECT */
+  .bi-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .bi-stat { background: var(--surface); border-radius: var(--radius); padding: 1rem; border: 1px solid var(--border); text-align: center; }
+  .bi-num { font-size: 22px; font-weight: 500; color: var(--ink); }
+  .bi-lbl { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+  .bi-panels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 1.5rem; }
+  .bi-panel {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 0.85rem; cursor: pointer; transition: border-color 0.2s, background 0.2s; text-align: center;
+  }
+  .bi-panel:hover { border-color: var(--accent); }
+  .bi-panel.active { background: var(--accent-light); border-color: var(--accent); }
+  .bi-panel-name { font-size: 12px; font-weight: 500; color: var(--ink); margin-top: 4px; }
+  .bi-panel-icon { font-size: 18px; }
+  .bi-screens { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .bi-screen { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  .bi-screen img { width: 100%; display: block; }
+  .bi-screen-cap { font-size: 11px; color: var(--ink-3); padding: 5px 10px; background: var(--bg); }
+
+  /* PROJECT DESCRIPTION */
+  .proj-desc-block { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 1.5rem 2rem; margin-bottom: 1.5rem; }
+  .proj-desc-block p { font-size: 14px; color: var(--ink-2); line-height: 1.7; margin-bottom: 1rem; }
+  .proj-desc-block p:last-child { margin-bottom: 0; }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
+  .proj-tag { font-size: 11px; padding: 4px 11px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border); color: var(--ink-2); }
+  .proj-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .proj-link { padding: 10px 22px; border-radius: 50px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: none; transition: transform 0.15s; }
+  .proj-link:hover { transform: translateY(-1px); }
+  .pl-dark { background: var(--ink); color: #fff; }
+  .pl-ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+
+  /* LANGUAGES */
+  .langs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .lang-card { background: var(--surface); border-radius: var(--radius); padding: 1.1rem 1.25rem; border: 1px solid var(--border); }
+  .lang-name { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .lang-level { font-size: 12px; color: var(--ink-3); }
+  .lang-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+  .lang-fill { height: 100%; border-radius: 2px; background: var(--accent); }
+
+  /* CONTACT */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+  .contact-left .big-text { font-family: 'DM Serif Display', serif; font-size: 36px; line-height: 1.2; color: var(--ink); margin-bottom: 1rem; }
+  .contact-left p { font-size: 15px; color: var(--ink-2); line-height: 1.7; }
+  .contact-items { display: flex; flex-direction: column; gap: 10px; }
+  .contact-item { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; text-decoration: none; color: var(--ink); transition: border-color 0.2s; }
+  .contact-item:hover { border-color: var(--accent); }
+  .ci-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .ci-label { font-size: 11px; color: var(--ink-3); }
+  .ci-val { font-size: 14px; font-weight: 500; color: var(--ink); }
+
+  /* FOOTER */
+  footer { text-align: center; padding: 2.5rem 3rem; border-top: 1px solid var(--border); font-size: 13px; color: var(--ink-3); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeUp 0.6s both; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { flex-direction: column; padding: 6rem 1.5rem 3rem; gap: 2rem; }
+    .hero-right { flex: unset; width: 100%; }
+    section { padding: 3rem 1.5rem; }
+    .divider { margin: 0 1.5rem; }
+    .exp-row { grid-template-columns: 1fr; gap: 0.5rem; }
+    .mm-grid { grid-template-columns: 1fr; }
+    .bi-panels { grid-template-columns: repeat(3, 1fr); }
+    .bi-screens { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .mkt-hero-top { flex-direction: column; }
+    .swot { max-width: 100%; }
+    .mkt-metrics { grid-template-columns: repeat(3,1fr); }
+  }
+</style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">alex<span>.</span>portfolio</a>
+  <a class="nav-logo" href="#">Tiago Lagos</a>
   <ul class="nav-links">
-    <li><a href="#works">Works</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#experiencia">Experiência</a></li>
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-  </div>
-
-  <div class="hero-content">
-    <div class="hero-tag">Open to opportunities</div>
-    <h1>Data meets<br><em>Creative</em><br>Strategy.</h1>
-    <p class="hero-sub">Multimedia communication, digital marketing campaigns, and Power BI dashboards — turning information into impact.</p>
-    <div class="hero-cta">
-      <a href="#works" class="btn btn-primary">View Works ↓</a>
-      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+<div class="hero" id="sobre">
+  <div class="hero-left fade-in">
+    <span class="hero-eyebrow">Relações Humanas · Comunicação · BI</span>
+    <h1>Tiago<br><em>Lagos</em></h1>
+    <p class="hero-desc">Licenciado em Relações Humanas e Comunicação Organizacional. Experiente em liderança de equipas, recursos humanos e análise de dados. Baseado em Leiria, Portugal.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#projetos">Ver projetos</a>
+      <a class="btn-ghost" href="#contacto">Contactar</a>
     </div>
   </div>
-
-  <div class="hero-visual">
-    <div class="hero-card-stack">
-      <div class="hc hc-1"></div>
-      <div class="hc hc-2"></div>
-      <div class="hc hc-main">
-        <div>
-          <div class="hc-label">Campaign reach — Q4</div>
-          <div class="hc-metric">94.2k</div>
-        </div>
-        <div class="hc-bar-wrap">
-          <div class="hc-bar-row">
-            <span class="hc-bar-lbl">Organic</span>
-            <div class="hc-bar-track"><div class="hc-bar-fill" style="width:78%"></div></div>
-          </div>
-          <div class="hc-bar-row">
-            <span class="hc-bar-lbl">Paid</span>
-            <div class="hc-bar-track"><div class="hc-bar-fill" style="width:54%; background: #6e56ff;"></div></div>
-          </div>
-          <div class="hc-bar-row">
-            <span class="hc-bar-lbl">Referral</span>
-            <div class="hc-bar-track"><div class="hc-bar-fill" style="width:33%; background: #ff6b35;"></div></div>
-          </div>
-        </div>
-      </div>
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hc-label">Experiência</div>
+      <div class="hc-val">5+ anos</div>
+      <div class="hc-sub">Liderança · RH · Operações</div>
     </div>
-  </div>
-</section>
-
-<!-- SKILLS MARQUEE -->
-<div class="skills-strip">
-  <div class="skills-track">
-    <span>Multimedia Production</span>
-    <span>Adobe Premiere</span>
-    <span>Power BI</span>
-    <span>Google Ads</span>
-    <span>Social Media Strategy</span>
-    <span>After Effects</span>
-    <span>SEO / SEM</span>
-    <span>Data Visualization</span>
-    <span>Content Creation</span>
-    <span>DAX & Power Query</span>
-    <span>Email Marketing</span>
-    <span>Figma</span>
-    <span>Multimedia Production</span>
-    <span>Adobe Premiere</span>
-    <span>Power BI</span>
-    <span>Google Ads</span>
-    <span>Social Media Strategy</span>
-    <span>After Effects</span>
-    <span>SEO / SEM</span>
-    <span>Data Visualization</span>
-    <span>Content Creation</span>
-    <span>DAX & Power Query</span>
-    <span>Email Marketing</span>
-    <span>Figma</span>
+    <div class="hero-card">
+      <div class="hc-label">Formação</div>
+      <div class="hc-val">ESECS</div>
+      <div class="hc-sub">Relações Humanas e Com. Org.</div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-label">Línguas</div>
+      <div class="hc-val">4</div>
+      <div class="hc-sub">PT · EN (C1) · FR (B2) · ES (B1)</div>
+    </div>
   </div>
 </div>
 
-<!-- WORKS -->
-<section id="works">
-  <div class="works-header reveal">
-    <div>
-      <div class="section-label">Selected works</div>
-      <h2>Projects &<br>Case Studies</h2>
-    </div>
-    <div class="categories">
-      <button class="cat-btn active" onclick="filterCat('all', this)">All</button>
-      <button class="cat-btn" onclick="filterCat('mm', this)">Multimedia</button>
-      <button class="cat-btn" onclick="filterCat('dm', this)">Digital Marketing</button>
-      <button class="cat-btn" onclick="filterCat('bi', this)">Power BI</button>
-    </div>
+<hr class="divider" />
+
+<!-- EXPERIÊNCIA -->
+<section id="experiencia">
+  <div class="section-header">
+    <p class="section-eyebrow">Percurso profissional</p>
+    <h2 class="section-title">Experiência</h2>
   </div>
-
-  <div class="works-grid" id="worksGrid">
-
-    <!-- Card 1 - MM -->
-    <div class="work-card reveal" data-cat="mm">
-      <div class="card-thumb">
-        <div class="card-thumb-bg" style="background: linear-gradient(135deg, #6e56ff, #a89eff);"></div>
-        <div class="card-thumb-icon">🎬</div>
-      </div>
-      <div class="card-body">
-        <span class="card-cat cat-mm">Multimedia</span>
-        <div class="card-title">Brand Identity Video Series</div>
-        <p class="card-desc">Full video production for a tech startup — scripting, motion graphics, colour grading. Delivered a 3-episode content series across Instagram and YouTube.</p>
-        <div class="card-footer">
-          <div class="card-tools">
-            <span class="tool-tag">Premiere Pro</span>
-            <span class="tool-tag">After Effects</span>
-            <span class="tool-tag">Audition</span>
-          </div>
-          <div class="card-arrow">→</div>
+  <div class="exp-grid">
+    <div class="exp-row">
+      <div class="exp-date">2025</div>
+      <div>
+        <div class="exp-company">MD Plastics</div>
+        <div class="exp-role">Assistente de Recursos Humanos — Estágio Curricular</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Comunicação interna</span>
+          <span class="exp-tag">Descrições de funções</span>
+          <span class="exp-tag">KPIs de RH</span>
+          <span class="exp-tag">Gestão administrativa</span>
         </div>
       </div>
     </div>
-
-    <!-- Card 2 - DM -->
-    <div class="work-card reveal" data-cat="dm">
-      <div class="card-thumb">
-        <div class="card-thumb-bg" style="background: linear-gradient(135deg, #ff6b35, #ffb347);"></div>
-        <div class="card-thumb-icon">📈</div>
-      </div>
-      <div class="card-body">
-        <span class="card-cat cat-dm">Digital Marketing</span>
-        <div class="card-title">E-commerce Growth Campaign</div>
-        <p class="card-desc">Full-funnel Google & Meta Ads strategy for a fashion brand. 3.4× ROAS over 90 days.</p>
-        <div class="card-footer">
-          <div class="card-tools">
-            <span class="tool-tag">Google Ads</span>
-            <span class="tool-tag">Meta Ads</span>
-            <span class="tool-tag">GA4</span>
-          </div>
-          <div class="card-arrow">→</div>
+    <div class="exp-row">
+      <div class="exp-date">2023 – 2024</div>
+      <div>
+        <div class="exp-company">Nike — Roermond, Países Baixos</div>
+        <div class="exp-role">Team Lead / Manager</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Liderança (≈20 pessoas)</span>
+          <span class="exp-tag">KPIs & melhoria contínua</span>
+          <span class="exp-tag">Recrutamento</span>
+          <span class="exp-tag">Planeamento operacional</span>
+          <span class="exp-tag">Alta performance</span>
         </div>
       </div>
     </div>
-
-    <!-- Card 3 - BI -->
-    <div class="work-card reveal" data-cat="bi">
-      <div class="card-thumb">
-        <div class="card-thumb-bg" style="background: linear-gradient(135deg, #c8f135, #44cc44);"></div>
-        <div class="card-thumb-icon">📊</div>
-      </div>
-      <div class="card-body">
-        <span class="card-cat cat-bi">Power BI</span>
-        <div class="card-title">IT Infrastructure Dashboard</div>
-        <p class="card-desc">Real-time Power BI report for monitoring IT assets, SLA compliance, and incident KPIs across 5 departments.</p>
-        <div class="card-footer">
-          <div class="card-tools">
-            <span class="tool-tag">Power BI</span>
-            <span class="tool-tag">DAX</span>
-            <span class="tool-tag">SQL</span>
-          </div>
-          <div class="card-arrow">→</div>
+    <div class="exp-row">
+      <div class="exp-date">2020 – 2023</div>
+      <div>
+        <div class="exp-company">PC Diga</div>
+        <div class="exp-role">Gestor de Operações de Armazém</div>
+        <div class="exp-tags">
+          <span class="exp-tag">SAP</span>
+          <span class="exp-tag">Gestão de stocks</span>
+          <span class="exp-tag">Coordenação de equipa</span>
+          <span class="exp-tag">Formação de colaboradores</span>
+          <span class="exp-tag">Otimização de processos</span>
         </div>
-      </div>
-    </div>
-
-    <!-- Card 4 - MM -->
-    <div class="work-card reveal" data-cat="mm">
-      <div class="card-thumb">
-        <div class="card-thumb-bg" style="background: linear-gradient(135deg, #6e56ff, #cc44ff);"></div>
-        <div class="card-thumb-icon">🎨</div>
-      </div>
-      <div class="card-body">
-        <span class="card-cat cat-mm">Multimedia</span>
-        <div class="card-title">Interactive Exhibition Design</div>
-        <p class="card-desc">Concept and production of multimedia content for a cultural institution's interactive exhibition — animations, audio, and UX flow.</p>
-        <div class="card-footer">
-          <div class="card-tools">
-            <span class="tool-tag">Figma</span>
-            <span class="tool-tag">Illustrator</span>
-            <span class="tool-tag">Blender</span>
-          </div>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 5 - DM -->
-    <div class="work-card reveal" data-cat="dm">
-      <div class="card-thumb">
-        <div class="card-thumb-bg" style="background: linear-gradient(135deg, #ff6b35, #e83e8c);"></div>
-        <div class="card-thumb-icon">✉️</div>
-      </div>
-      <div class="card-body">
-        <span class="card-cat cat-dm">Digital Marketing</span>
-        <div class="card-title">Email Automation Flows</div>
-        <p class="card-desc">Designed and deployed a 7-step nurture sequence with segmented personalisation. 42% open rate, 18% CTR.</p>
-        <div class="card-footer">
-          <div class="card-tools">
-            <span class="tool-tag">Mailchimp</span>
-            <span class="tool-tag">HubSpot</span>
-          </div>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 6 - BI -->
-    <div class="work-card reveal" data-cat="bi">
-      <div class="card-thumb">
-        <div class="card-thumb-bg" style="background: linear-gradient(135deg, #c8f135, #0dcaf0);"></div>
-        <div class="card-thumb-icon">🗃️</div>
-      </div>
-      <div class="card-body">
-        <span class="card-cat cat-bi">Power BI</span>
-        <div class="card-title">Sales Performance Tracker</div>
-        <p class="card-desc">End-to-end Power Query pipeline + dynamic sales dashboard with forecast models and regional breakdowns.</p>
-        <div class="card-footer">
-          <div class="card-tools">
-            <span class="tool-tag">Power BI</span>
-            <span class="tool-tag">Power Query</span>
-            <span class="tool-tag">Excel</span>
-          </div>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 7 - MM -->
-    <div class="work-card reveal" data-cat="mm">
-      <div class="card-thumb">
-        <div class="card-thumb-bg" style="background: linear-gradient(135deg, #6e56ff, #ff6b35);"></div>
-        <div class="card-thumb-icon">🎙️</div>
-      </div>
-      <div class="card-body">
-        <span class="card-cat cat-mm">Multimedia</span>
-        <div class="card-title">Podcast Brand & Production</div>
-        <p class="card-desc">Full brand identity and audio production pipeline for a business podcast — intro jingle, cover art, episode editing workflow.</p>
-        <div class="card-footer">
-          <div class="card-tools">
-            <span class="tool-tag">Audition</span>
-            <span class="tool-tag">Illustrator</span>
-          </div>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="about-grid">
-    <div class="about-content reveal">
-      <div class="section-label">About</div>
-      <h2>Where data<br>meets storytelling.</h2>
-      <p>I work at the crossroads of multimedia communication, performance marketing, and business intelligence — helping organisations understand their data and communicate it beautifully.</p>
-      <p>With a background in informatic management, I bring analytical rigour to creative work, and creative thinking to analytical challenges.</p>
-      <div class="about-stats">
-        <div class="stat-box">
-          <div class="stat-num">20+</div>
-          <div class="stat-lbl">Projects completed</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">3</div>
-          <div class="stat-lbl">Areas of expertise</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">94k</div>
-          <div class="stat-lbl">Campaign reach</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">3.4×</div>
-          <div class="stat-lbl">Avg. ROAS delivered</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="about-visual reveal">
-      <div class="skill-row">
-        <div class="skill-info"><span>Multimedia Production</span><span class="skill-pct">90%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:90%; background: #6e56ff;"></div></div>
-      </div>
-      <div class="skill-row">
-        <div class="skill-info"><span>Digital Marketing & Ads</span><span class="skill-pct">85%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:85%; background: #ff6b35;"></div></div>
-      </div>
-      <div class="skill-row">
-        <div class="skill-info"><span>Power BI & Data Viz</span><span class="skill-pct">88%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:88%; background: var(--accent);"></div></div>
-      </div>
-      <div class="skill-row">
-        <div class="skill-info"><span>SEO / Content Strategy</span><span class="skill-pct">80%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:80%; background: #6e56ff;"></div></div>
-      </div>
-      <div class="skill-row">
-        <div class="skill-info"><span>Adobe Creative Suite</span><span class="skill-pct">92%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:92%; background: #ff6b35;"></div></div>
-      </div>
-      <div class="skill-row">
-        <div class="skill-info"><span>SQL & Power Query</span><span class="skill-pct">75%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:75%; background: var(--accent);"></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="reveal">
-    <div class="section-label">Get in touch</div>
-    <h2>Let's work together.</h2>
-    <p>Available for freelance projects, collaborations, and full-time opportunities.</p>
-    <div class="contact-links">
-      <a href="mailto:hello@example.com" class="contact-link">✉️ hello@example.com</a>
-      <a href="https://linkedin.com" target="_blank" class="contact-link">🔗 LinkedIn</a>
-      <a href="https://github.com" target="_blank" class="contact-link">🐙 GitHub</a>
+<hr class="divider" />
+
+<!-- COMPETÊNCIAS -->
+<section>
+  <div class="section-header">
+    <p class="section-eyebrow">O que sei fazer</p>
+    <h2 class="section-title">Competências</h2>
+  </div>
+  <div class="skills-wrap">
+    <div class="skill-block">
+      <div class="skill-icon">◎</div>
+      <div class="skill-name">Liderança de equipas</div>
+      <div class="skill-desc">Gestão de pessoas em ambientes de alta performance</div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-icon">◎</div>
+      <div class="skill-name">Comunicação eficaz</div>
+      <div class="skill-desc">Comunicação organizacional e estratégica</div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-icon">◎</div>
+      <div class="skill-name">Marketing Digital</div>
+      <div class="skill-desc">Estratégia, email marketing e campanhas digitais</div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-icon">◎</div>
+      <div class="skill-name">Business Intelligence</div>
+      <div class="skill-desc">Power BI, DAX, modelação e análise de dados</div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-icon">◎</div>
+      <div class="skill-name">Comunicação Multimédia</div>
+      <div class="skill-desc">Design gráfico, vídeo e produção de conteúdo</div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-icon">◎</div>
+      <div class="skill-name">Resolução de problemas</div>
+      <div class="skill-desc">Pensamento crítico e adaptabilidade</div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<hr class="divider" />
+
+<!-- PROJETOS -->
+<section id="projetos">
+  <div class="section-header">
+    <p class="section-eyebrow">Trabalhos académicos</p>
+    <h2 class="section-title">Projetos</h2>
+  </div>
+
+  <div class="proj-nav">
+    <button class="proj-tab active" onclick="showProj('mm', this)">Comunicação Multimédia</button>
+    <button class="proj-tab" onclick="showProj('mkt', this)">Marketing Digital</button>
+    <button class="proj-tab" onclick="showProj('bi', this)">Business Intelligence</button>
+  </div>
+
+  <!-- MULTIMÉDIA -->
+  <div class="proj-section visible" id="proj-mm">
+    <div class="mm-grid">
+      <div class="mm-media">
+        <div class="mm-media-label">Cartaz — Dia Aberto CITL</div>
+        <div class="mm-poster" onclick="window.open('https://tiagolagos7.wixsite.com/my-site-1','_blank')">
+          <img src="https://tiagolagos7.wixsite.com/my-site-1" alt="Mundo do Desporto" onerror="this.style.display='none';this.parentElement.style.background='#1a1a18';this.parentElement.style.minHeight='200px'" />
+          <div class="mm-poster-overlay"><div class="play-circle"><div style="font-size:11px;color:#111;font-weight:500;padding:0 4px">site →</div></div></div>
+        </div>
+      </div>
+      <div class="mm-media">
+        <div class="mm-media-label">Vídeo promocional</div>
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/XiW2J8Gdh28" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="proj-desc-block">
+      <p>Projeto completo de comunicação visual para promoção de um dia aberto desportivo no CITL, Leiria. O trabalho abrangeu toda a cadeia de comunicação multimédia: desde o design de cartaz impresso com composição fotográfica, tipografia impactante e QR code, até ao desenvolvimento de site de apoio no Wix e produção de vídeo promocional.</p>
+      <p>O projeto demonstra competências transversais de comunicação visual, design gráfico e produção digital — unindo criatividade com objetivos de comunicação concretos.</p>
+    </div>
+    <div class="proj-tags">
+      <span class="proj-tag">Design gráfico</span>
+      <span class="proj-tag">Fotografia</span>
+      <span class="proj-tag">Tipografia</span>
+      <span class="proj-tag">QR Code</span>
+      <span class="proj-tag">Wix</span>
+      <span class="proj-tag">Produção de vídeo</span>
+      <span class="proj-tag">Identidade de evento</span>
+      <span class="proj-tag">Nota: 17 valores</span>
+    </div>
+    <div class="proj-links">
+      <a class="proj-link pl-dark" href="https://tiagolagos7.wixsite.com/my-site-1" target="_blank">Ver site →</a>
+      <a class="proj-link pl-ghost" href="https://youtube.com/shorts/XiW2J8Gdh28" target="_blank">Ver vídeo →</a>
+    </div>
+  </div>
+
+  <!-- MARKETING -->
+  <div class="proj-section" id="proj-mkt">
+    <div class="mkt-hero">
+      <div class="mkt-hero-top">
+        <div>
+          <div class="mkt-title">I-BrakeBicycle — Plano de Marketing Digital</div>
+          <div class="mkt-sub">Desafio final · Professora Iolanda Bernardino · Aplicações de Marketing Digital</div>
+        </div>
+        <div class="swot">
+          <div class="swot-cell s"><div class="sl">Forças</div><div class="sv">Tecnologia inovadora · Segurança preventiva</div></div>
+          <div class="swot-cell w"><div class="sl">Fraquezas</div><div class="sv">Produto novo · Educar o mercado</div></div>
+          <div class="swot-cell o"><div class="sl">Oportunidades</div><div class="sv">Mobilidade urbana · Sustentabilidade</div></div>
+          <div class="swot-cell t"><div class="sl">Ameaças</div><div class="sv">Concorrência consolidada</div></div>
+        </div>
+      </div>
+      <div class="mkt-metrics">
+        <div class="mkt-metric"><div class="mm-num">+40%</div><div class="mm-lbl">Notoriedade em 6 meses</div></div>
+        <div class="mkt-metric"><div class="mm-num">5.000</div><div class="mm-lbl">Leads digitais</div></div>
+        <div class="mkt-metric"><div class="mm-num">+30%</div><div class="mm-lbl">Vendas online</div></div>
+      </div>
+    </div>
+    <div class="mkt-email">
+      <div class="mkt-email-title">Campanha de Email Marketing — Desafio 4</div>
+      <div class="mkt-email-desc">Desenvolvimento de newsletter, landing page e email responsivo (mobile + desktop) para a marca I-BrakeBicycle. Foco em conversão, copywriting e comunicação da proposta de valor.</div>
+    </div>
+    <br/>
+    <div class="proj-tags">
+      <span class="proj-tag">Análise SWOT</span>
+      <span class="proj-tag">Personas</span>
+      <span class="proj-tag">SEO</span>
+      <span class="proj-tag">Google Ads</span>
+      <span class="proj-tag">Email Marketing</span>
+      <span class="proj-tag">Newsletter</span>
+      <span class="proj-tag">Landing Page</span>
+      <span class="proj-tag">Influenciadores</span>
+      <span class="proj-tag">Responsive Design</span>
+    </div>
+  </div>
+
+  <!-- BI -->
+  <div class="proj-section" id="proj-bi">
+    <div class="bi-stats">
+      <div class="bi-stat"><div class="bi-num">38.279</div><div class="bi-lbl">Clientes únicos</div></div>
+      <div class="bi-stat"><div class="bi-num">13,11 M</div><div class="bi-lbl">Receita total</div></div>
+      <div class="bi-stat"><div class="bi-num">38,28 K</div><div class="bi-lbl">Produtos vendidos</div></div>
+      <div class="bi-stat"><div class="bi-num">10,25 M</div><div class="bi-lbl">Total pago</div></div>
+      <div class="bi-stat"><div class="bi-num">12,48 h</div><div class="bi-lbl">Tempo médio aprovação</div></div>
+    </div>
+    <div class="bi-panels">
+      <div class="bi-panel active" onclick="setBiPanel(this, 'Painel Clientes', '38.279 clientes únicos por estado e cidade, com drill-down, TOP 5 cidades e matriz de tipos de pagamento.')">
+        <div class="bi-panel-icon">👤</div>
+        <div class="bi-panel-name">Clientes</div>
+      </div>
+      <div class="bi-panel" onclick="setBiPanel(this, 'Painel Produtos', 'Receita por categoria, participação na faturação (toys domina com 74,83%) e quantidade vendida.')">
+        <div class="bi-panel-icon">📦</div>
+        <div class="bi-panel-name">Produtos</div>
+      </div>
+      <div class="bi-panel" onclick="setBiPanel(this, 'Painel Vendas', 'Receita 13,11M, 38K produtos, sazonalidade 2016-2018, TOP 5 mais vendidos e TOP 10 menos vendidos.')">
+        <div class="bi-panel-icon">📈</div>
+        <div class="bi-panel-name">Vendas</div>
+      </div>
+      <div class="bi-panel" onclick="setBiPanel(this, 'Painel Pagamentos', 'Total pago 10,25M. Distribuição: credit card 73,35%, wallet 19,16%, voucher 6,22%.')">
+        <div class="bi-panel-icon">💳</div>
+        <div class="bi-panel-name">Pagamentos</div>
+      </div>
+      <div class="bi-panel" onclick="setBiPanel(this, 'Receita & Mapa', 'Receita por estado/cidade com drill-down e mapa geográfico interativo de distribuição de clientes.')">
+        <div class="bi-panel-icon">🗺️</div>
+        <div class="bi-panel-name">Mapa</div>
+      </div>
+    </div>
+    <div class="proj-desc-block" id="biDetail">
+      <p>38.279 clientes únicos por estado e cidade, com drill-down, TOP 5 cidades e matriz de tipos de pagamento.</p>
+    </div>
+    <div class="bi-screens">
+      <div class="bi-screen">
+        <img src="https://i.imgur.com/placeholder.png" alt="Painel Clientes" onerror="this.style.display='none'" />
+        <div class="bi-screen-cap">Painel Clientes — 38.279 clientes · TOP 5 cidades</div>
+      </div>
+      <div class="bi-screen">
+        <img src="https://i.imgur.com/placeholder.png" alt="Painel Vendas" onerror="this.style.display='none'" />
+        <div class="bi-screen-cap">Painel Vendas — Receita 13,11M · Sazonalidade</div>
+      </div>
+    </div>
+    <div class="proj-tags">
+      <span class="proj-tag">Power BI Desktop</span>
+      <span class="proj-tag">DAX</span>
+      <span class="proj-tag">Power Query</span>
+      <span class="proj-tag">Modelação relacional</span>
+      <span class="proj-tag">Hierarquias geográficas</span>
+      <span class="proj-tag">Drill-down</span>
+      <span class="proj-tag">Análise de sazonalidade</span>
+      <span class="proj-tag">Professora: Rosa Matias · IPL 2025/2026</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- LÍNGUAS -->
+<section>
+  <div class="section-header">
+    <p class="section-eyebrow">Comunicação global</p>
+    <h2 class="section-title">Línguas</h2>
+  </div>
+  <div class="langs-grid">
+    <div class="lang-card">
+      <div class="lang-name">Português</div>
+      <div class="lang-level">Língua nativa</div>
+      <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-name">Inglês</div>
+      <div class="lang-level">Avançado — C1</div>
+      <div class="lang-bar"><div class="lang-fill" style="width:88%"></div></div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-name">Francês</div>
+      <div class="lang-level">Intermédio — B2</div>
+      <div class="lang-bar"><div class="lang-fill" style="width:65%"></div></div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-name">Espanhol</div>
+      <div class="lang-level">Intermédio — B1</div>
+      <div class="lang-bar"><div class="lang-fill" style="width:50%"></div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contact-grid">
+    <div class="contact-left">
+      <p class="big-text">Vamos trabalhar juntos?</p>
+      <p>Estou disponível para novas oportunidades nas áreas de Recursos Humanos, Comunicação Organizacional e Marketing Digital.</p>
+    </div>
+    <div class="contact-items">
+      <a class="contact-item" href="mailto:tiagolagos7@gmail.com">
+        <div class="ci-icon">✉</div>
+        <div><div class="ci-label">Email</div><div class="ci-val">tiagolagos7@gmail.com</div></div>
+      </a>
+      <a class="contact-item" href="tel:+351912406553">
+        <div class="ci-icon">☎</div>
+        <div><div class="ci-label">Telefone</div><div class="ci-val">+351 912 406 553</div></div>
+      </a>
+      <a class="contact-item" href="https://www.linkedin.com/in/tiago-lagos-331b2338/" target="_blank">
+        <div class="ci-icon">in</div>
+        <div><div class="ci-label">LinkedIn</div><div class="ci-val">tiago-lagos-331b2338</div></div>
+      </a>
+      <div class="contact-item" style="cursor:default">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Localização</div><div class="ci-val">Leiria, Portugal</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <span>© 2025 Alex Portfolio. All rights reserved.</span>
-  <span>Built with plain HTML/CSS/JS — hosted on GitHub Pages.</span>
+  <p>© 2025 Tiago Lagos · Leiria, Portugal</p>
 </footer>
 
 <script>
-  // Scroll reveal
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-      }
-    });
-  }, { threshold: 0.1 });
+function showProj(key, btn) {
+  document.querySelectorAll('.proj-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.proj-section').forEach(s => s.classList.remove('visible'));
+  document.getElementById('proj-' + key).classList.add('visible');
+}
+function setBiPanel(el, title, desc) {
+  document.querySelectorAll('.bi-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('biDetail').innerHTML = '<p>' + desc + '</p>';
+}
 
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Filter works
-  function filterCat(cat, btn) {
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    document.querySelectorAll('.work-card').forEach(card => {
-      const match = cat === 'all' || card.dataset.cat === cat;
-      card.style.opacity = match ? '1' : '0.2';
-      card.style.pointerEvents = match ? 'auto' : 'none';
-    });
-  }
+// Scroll fade-in
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = 1; e.target.style.transform = 'translateY(0)'; } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.exp-row, .skill-block, .lang-card, .hero-card').forEach(el => {
+  el.style.opacity = 0; el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  obs.observe(el);
+});
 </script>
 </body>
 </html>
